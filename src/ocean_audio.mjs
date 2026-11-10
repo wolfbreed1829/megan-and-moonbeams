@@ -94,19 +94,21 @@ export function setOceanSound(value, complete, failed) {
   }
 }
 
-document.addEventListener('visibilitychange', () => {
-  if (enabled && !document.hidden && context) {
-    context.resume().then(adjustVolume).catch(() => {
-      enabled = false;
-      adjustVolume();
-      reportFailure();
-    });
-  } else adjustVolume();
-});
-window.addEventListener('pagehide', () => {
-  clearTimeout(suspension);
-  context?.suspend().catch(() => {});
-});
-window.addEventListener('pageshow', () => {
-  if (enabled && !document.hidden && context) context.resume().then(adjustVolume).catch(() => {});
-});
+if (typeof window !== 'undefined') {
+  document.addEventListener('visibilitychange', () => {
+    if (enabled && !document.hidden && context) {
+      context.resume().then(adjustVolume).catch(() => {
+        enabled = false;
+        adjustVolume();
+        reportFailure();
+      });
+    } else adjustVolume();
+  });
+  window.addEventListener('pagehide', () => {
+    clearTimeout(suspension);
+    context?.suspend().catch(() => {});
+  });
+  window.addEventListener('pageshow', () => {
+    if (enabled && !document.hidden && context) context.resume().then(adjustVolume).catch(() => {});
+  });
+}

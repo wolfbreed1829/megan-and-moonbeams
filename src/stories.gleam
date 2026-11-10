@@ -17,7 +17,7 @@ pub type Chapter {
   Chapter(title: String, text: String)
 }
 
-// Illustrative content. Replace with Megan's own stories and recordings.
+// Illustrative content. Replace with Elizabeth's own stories and recordings.
 pub fn all() -> List(Story) {
   [
     Story(

@@ -24,4 +24,4 @@ export function narrate(content, ended, failed) {
   window.speechSynthesis.speak(narration);
 }
 
-window.addEventListener('pagehide', stopNarration);
+if (typeof window !== 'undefined') window.addEventListener('pagehide', stopNarration);

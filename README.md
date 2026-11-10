@@ -1,6 +1,6 @@
 # Megan and Moonbeams
 
-A cinematic entry screen for Megan's Christian storytelling app.
+A cinematic entry screen for Elizabeth Patrick's Christian storytelling app. Elizabeth lives in Anchorage, Alaska; the app's name is Megan and Moonbeams.
 
 Live app: https://wolfbreed1829.github.io/megan-and-moonbeams/
 
@@ -43,14 +43,22 @@ npm run preview -- --base=/megan-and-moonbeams/
 - `src/atmosphere.js`: eased pointer parallax and story transitions. Decorative motion pauses when the tab is hidden and respects both the pause control and reduced-motion preferences.
 - `src/ocean.js`: a small WebGL water renderer that animates the waves and moonlight reflection at 30fps. The static ocean artwork remains available if WebGL is unavailable or lost. Water rendering stops when a story is open, motion is paused, or the tab is hidden.
 - `src/ocean_audio.mjs`: opt-in ocean ambience synthesized with Web Audio. It starts only after a click, fades out when disabled, suspends in a hidden tab, and becomes quieter during narration.
-- `src/browser.mjs`: optional browser speech synthesis. It is clearly labeled sample narration, not Megan's voice.
+- `src/browser.mjs`: optional browser speech synthesis. It is clearly labeled sample narration, not Elizabeth's voice.
 - `src/main.js`: starts Lustre and bridges native modal focus management.
 
-Watch shows a short coming-soon state until Megan's videos are available. Read offers three sample reflections; Listen narrates the selected chapter with the browser's voice where supported. The story collection, chapter selection, reflection, Escape-to-close, focus restoration, and atmosphere pause all work. No video or recordings are fabricated.
+Watch shows a short coming-soon state until Elizabeth's videos are available. Read offers three sample reflections; Listen narrates the selected chapter with the browser's voice where supported. The story collection, chapter selection, reflection, Escape-to-close, focus restoration, and atmosphere pause all work. No video or recordings are fabricated.
 
 The entrance defaults to Read so the first action opens a complete sample. Chapters lead into a quiet reflection with an optional breathing rhythm. The rhythm becomes static when motion is paused or reduced. Share previews use `public/images/share-preview.jpg`; the source layout is retained in `docs/artwork/share-preview.html`.
 
-Replace the sample records with Megan's content, then connect actual video, audio, caption, and transcript assets in the story view as the app grows.
+Replace the sample records with Elizabeth's content, then connect actual video, audio, caption, and transcript assets in the story view as the app grows.
+
+## Search and sharing
+
+The production build renders the actual Gleam entry view into the HTML before Vite packages it. The same view starts interactively in the browser; the author's name, location, headline, and Scripture are available without JavaScript. Browser-only audio listeners are guarded so the view can also run in Node at build time.
+
+`index.html` includes a descriptive title, canonical URL, author metadata, Open Graph and Twitter previews, and a JSON-LD graph connecting the WebSite, WebPage, and Elizabeth Patrick as a Person. `public/sitemap.xml` lists the canonical home page. No sample reflection is represented as a published personal testimony or playable video.
+
+When the public domain changes, update the absolute metadata URLs and sitemap together. This is a GitHub Pages project under a subdirectory, so a project-level robots.txt would not control crawling; that file is only recognized at the host root. Submit the sitemap in Google Search Console once the property is verified. Indexing and search rankings are determined by search engines.
 
 ## Artwork
 

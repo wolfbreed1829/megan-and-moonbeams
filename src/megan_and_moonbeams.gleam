@@ -77,6 +77,12 @@ pub fn main() {
   Nil
 }
 
+// Render the same entry view at build time so its content is available immediately.
+pub fn render_entry() -> String {
+  let #(model, _) = init(Nil)
+  element.to_string(view(model))
+}
+
 fn init(_) {
   #(Model(Read, Entry, 0, 0, False, False, True, Quiet), effect.none())
 }
@@ -312,7 +318,13 @@ fn view(model: Model) {
               ),
             ]),
             h.p([a.class("hero-note")], [
-              text("Faith-filled stories, from Megan to you."),
+              text("Christian stories by "),
+              h.span([a.class("author-name"), a.id("author")], [
+                text("Elizabeth Patrick"),
+              ]),
+              h.span([a.class("author-location")], [
+                text("Anchorage, Alaska"),
+              ]),
             ]),
             mode_selector(model.mode),
             h.button([a.class("enter-button"), e.on_click(Open(Story))], [
@@ -322,6 +334,9 @@ fn view(model: Model) {
                 Watch -> "Enter the story"
               }),
               icon("arrow"),
+            ]),
+            h.p([a.class("no-js-note")], [
+              text("Enable JavaScript to explore the sample stories."),
             ]),
           ]),
           h.div([a.class("ocean-caption"), a.attribute("aria-hidden", "true")], [
@@ -547,7 +562,7 @@ fn story_view(model: Model) {
         h.div([a.class("film-preview")], [
           h.div([a.class("film-preview-copy")], [
             icon("play"),
-            h.p([], [text("Megan’s first film is on its way.")]),
+            h.p([], [text("Elizabeth’s films are still to come.")]),
             h.button([a.class("text-button"), e.on_click(SelectMode(Read))], [
               text("Read a sample"),
               icon("arrow"),

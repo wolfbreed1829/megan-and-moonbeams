@@ -199,11 +199,13 @@ h2 em { font-weight: 400; color: var(--gold); }
 .reflection-dialog .scripture { border-left: 0; padding: 0; margin: 32px auto 20px; max-width: 450px; }
 .return-link { font-size: 11px; margin-top: 15px; color: var(--gold); }
 @keyframes orbit { 0%, 100% { transform: scale(1); opacity: .7; } 50% { transform: scale(1.08); opacity: 1; } }
-.no-script { display: grid; place-content: center; padding: 40px; height: 100svh; background: linear-gradient(#07111bb3,#07111bd9), url('/images/moonlit-ocean.webp') center / cover; }
-.no-script h1 { font-size: 55px; }
+.no-js-note { display: none; color: var(--muted); font-size: 13px; line-height: 1.7; }
 
 /* A welcoming entrance, with comfortable controls and an unhurried rhythm. */
-.hero-note { font-size: 14px; color: #e1e1d8; letter-spacing: .2px; }
+.hero-note { font-size: 14px; color: #e1e1d8; letter-spacing: .2px; margin-bottom: 28px; }
+.author-name { color: var(--cream); font-weight: 500; }
+.author-location { display: block; width: fit-content; margin-top: 8px; padding-left: 18px; position: relative; color: #c5cbd0; font-size: 11px; letter-spacing: 1.1px; }
+.author-location::before { content: '✧'; position: absolute; left: 0; top: -1px; color: var(--gold); font-size: 13px; }
 .kicker { font-size: 10px; letter-spacing: 2.2px; }
 .mode { min-height: 44px; font-size: 13px; gap: 9px; padding-top: 9px; }
 .mode .icon { width: 18px; height: 18px; }
