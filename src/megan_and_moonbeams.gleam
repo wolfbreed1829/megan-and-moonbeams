@@ -170,16 +170,54 @@ fn view(model: Model) {
       e.on_keydown(KeyPressed),
     ],
     [
-      h.div([a.class("room"), a.attribute("aria-hidden", "true")], []),
-      h.div([a.class("room-shade"), a.attribute("aria-hidden", "true")], []),
-      h.div([a.class("dust"), a.attribute("aria-hidden", "true")], [
-        h.i([], []),
-        h.i([], []),
-        h.i([], []),
-        h.i([], []),
-        h.i([], []),
-        h.i([], []),
+      h.div([a.class("ocean-camera"), a.attribute("aria-hidden", "true")], [
+        h.div([a.class("ocean")], [
+          element(
+            "canvas",
+            [a.class("ocean-surface"), a.attribute("aria-hidden", "true")],
+            [],
+          ),
+        ]),
+        h.div([a.class("moon-glow")], []),
+        h.div([a.class("sea-mist")], [h.i([], []), h.i([], [])]),
       ]),
+      h.div([a.class("ocean-shade"), a.attribute("aria-hidden", "true")], []),
+      h.div(
+        [a.class("dust"), a.attribute("aria-hidden", "true")],
+        list.index_map(list.repeat(Nil, 36), fn(_, index) {
+          h.i(
+            [
+              a.class(case index % 7 == 0 {
+                True -> "mote glow-mote"
+                False -> "mote"
+              }),
+              a.attribute(
+                "style",
+                "--x:"
+                  <> int.to_string(18 + index * 37 % 79)
+                  <> "%;"
+                  <> "--y:"
+                  <> int.to_string(3 + index * 23 % 35)
+                  <> "%;"
+                  <> "--size:"
+                  <> int.to_string(2 + index % 4)
+                  <> "px;"
+                  <> "--duration:"
+                  <> int.to_string(9 + index % 13)
+                  <> "s;"
+                  <> "--delay:-"
+                  <> int.to_string(index * 3 % 22)
+                  <> "s;"
+                  <> "--travel:"
+                  <> int.to_string(35 + index * 17 % 100)
+                  <> "px;",
+              ),
+            ],
+            [],
+          )
+        }),
+      ),
+      h.div([a.class("cinema-veil"), a.attribute("aria-hidden", "true")], []),
       h.div([a.class("entry"), a.id("entry")], [
         h.header([a.class("topbar")], [
           h.a(
@@ -211,11 +249,25 @@ fn view(model: Model) {
               h.span([a.class("little-line")], []),
               text("A LITTLE FAITH. A LITTLE WONDER."),
             ]),
-            h.h1([], [
-              text("Even here,"),
-              h.br([]),
-              text("there is "),
-              h.em([], [text("light.")]),
+            h.h1([a.aria_label("Even here, there is light.")], [
+              h.span(
+                [a.class("title-line"), a.attribute("aria-hidden", "true")],
+                [
+                  h.span([a.class("title-word word-one")], [text("Even")]),
+                  text(" "),
+                  h.span([a.class("title-word word-two")], [text("here,")]),
+                ],
+              ),
+              h.span(
+                [a.class("title-line"), a.attribute("aria-hidden", "true")],
+                [
+                  h.span([a.class("title-word word-three")], [text("there is")]),
+                  text(" "),
+                  h.span([a.class("title-word word-four")], [
+                    h.em([], [text("light.")]),
+                  ]),
+                ],
+              ),
             ]),
             h.p([a.class("hero-note")], [
               text("Christian stories. A moment for your soul."),
@@ -226,9 +278,9 @@ fn view(model: Model) {
               icon("arrow"),
             ]),
           ]),
-          h.div([a.class("room-caption"), a.attribute("aria-hidden", "true")], [
+          h.div([a.class("ocean-caption"), a.attribute("aria-hidden", "true")], [
             h.span([], []),
-            text("COME IN. STAY A WHILE."),
+            text("BENEATH THE SAME MOON."),
           ]),
         ]),
         h.footer([a.class("entry-footer")], [
@@ -355,7 +407,7 @@ fn dialog(class: String, title: String, content: List(Element(Message))) {
         h.button(
           [
             a.class("round-button close-button"),
-            a.aria_label("Return to the story room"),
+            a.aria_label("Return to the ocean"),
             e.on_click(Open(Entry)),
           ],
           [icon("close")],
@@ -499,7 +551,7 @@ fn reflection(model: Model) {
       h.cite([], [text(story.scripture)]),
     ]),
     h.button([a.class("text-button return-link"), e.on_click(Open(Entry))], [
-      text("Back to the story room"),
+      text("Back to the ocean"),
       icon("arrow"),
     ]),
   ]

@@ -1,11 +1,15 @@
 import { main } from '../build/dev/javascript/megan_and_moonbeams/megan_and_moonbeams.mjs';
+import { setupAtmosphere } from './atmosphere.js';
 
 // Native dialogs supply focus containment and make the background inert.
 // The observer only bridges browser behavior; Gleam owns all application state.
 let activeDialog = null;
 let returnFocus = null;
 let activeTitle = '';
+let disposeAtmosphere;
 const observer = new MutationObserver(() => {
+  const experience = document.querySelector('.experience');
+  if (experience && !disposeAtmosphere) disposeAtmosphere = setupAtmosphere(experience);
   const dialog = document.querySelector('dialog[data-dialog]');
   if (dialog && dialog !== activeDialog) {
     returnFocus = document.activeElement;
@@ -27,3 +31,8 @@ const observer = new MutationObserver(() => {
 });
 observer.observe(document.getElementById('app'), { childList: true, subtree: true, attributes: true, attributeFilter: ['aria-label'] });
 main();
+
+if (import.meta.hot) import.meta.hot.dispose(() => {
+  observer.disconnect();
+  disposeAtmosphere?.();
+});

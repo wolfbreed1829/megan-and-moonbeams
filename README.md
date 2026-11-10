@@ -40,6 +40,8 @@ npm run preview -- --base=/megan-and-moonbeams/
 - `src/megan_and_moonbeams.gleam`: typed model, messages, updates, views, and managed narration effects.
 - `src/stories.gleam`: sample story records, chapters, Scripture, and reflection prompts.
 - `src/styles.css`: cinematic layout, responsive styles, reduced-motion support.
+- `src/atmosphere.js`: eased pointer parallax and story transitions. Decorative motion pauses when the tab is hidden and respects both the pause control and reduced-motion preferences.
+- `src/ocean.js`: a small WebGL water renderer that animates the waves and moonlight reflection at 30fps. The static ocean artwork remains available if WebGL is unavailable or lost. Water rendering stops when a story is open, motion is paused, or the tab is hidden.
 - `src/browser.mjs`: optional browser speech synthesis. It is clearly labeled sample narration, not Megan's voice.
 - `src/main.js`: starts Lustre and bridges native modal focus management.
 
@@ -49,6 +51,6 @@ Replace the sample records with Megan's content, then connect actual video, audi
 
 ## Artwork
 
-The room was created with the built-in image-generation tool. The optimized runtime asset is `public/images/story-room.webp`; the original and exact generation prompt are in `docs/artwork/`. Fonts are Cormorant Garamond and DM Sans, served by Google Fonts with local fallbacks.
+The moonlit ocean was created with the built-in image-generation tool. The optimized runtime asset is `public/images/moonlit-ocean.webp`; the original and exact generation prompt are `docs/artwork/moonlit-ocean.png` and `docs/artwork/moonlit-ocean-prompt.txt`. The earlier room artwork is retained in the repository. Fonts are Cormorant Garamond and DM Sans, served by Google Fonts with local fallbacks.
 
 Framework reference: [Lustre](https://hexdocs.pm/lustre/).
