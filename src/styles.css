@@ -131,6 +131,8 @@ h1 em { display: inline-block; padding: 0 .07em .18em 0; margin-bottom: -.18em; 
 .motion-paused .cinema-veil { display: none; }
 .experience[data-entered] .cinema-veil { display: none; }
 .experience[data-entered] .title-word { animation: none; }
+.experience[data-entered] .hero-copy > *, .experience[data-entered] .topbar,
+.experience[data-entered] .entry-footer, .experience[data-entered] .ocean-caption { animation: none; }
 .motion-paused *, .motion-paused *::before, .motion-paused *::after { transition: none !important; }
 
 /* The entry remains one screen. Stories and reflection open inside the app. */
