@@ -6,6 +6,7 @@ import { setupAtmosphere } from './atmosphere.js';
 let activeDialog = null;
 let returnFocus = null;
 let activeTitle = '';
+let activeChapter = '';
 let disposeAtmosphere;
 const observer = new MutationObserver(() => {
   const experience = document.querySelector('.experience');
@@ -20,6 +21,7 @@ const observer = new MutationObserver(() => {
     document.body.classList.add('dialog-open');
   } else if (!dialog && activeDialog) {
     activeDialog = null;
+    activeChapter = '';
     document.body.classList.remove('dialog-open');
     if (returnFocus?.isConnected) returnFocus.focus({ preventScroll: true });
     else document.querySelector('.enter-button')?.focus({ preventScroll: true });
@@ -28,6 +30,14 @@ const observer = new MutationObserver(() => {
     dialog.scrollTop = 0;
     dialog.querySelector('.close-button')?.focus({ preventScroll: true });
   }
+  const chapter = dialog?.querySelector('.reading, .listen-preview');
+  const chapterKey = chapter ? `${activeTitle}|${chapter.className}|${chapter.querySelector('h3')?.textContent}` : '';
+  if (chapterKey && activeChapter && chapterKey !== activeChapter) {
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      || experience?.classList.contains('motion-paused');
+    chapter.scrollIntoView({ block: 'nearest', behavior: still ? 'instant' : 'smooth' });
+  }
+  activeChapter = chapterKey;
 });
 observer.observe(document.getElementById('app'), { childList: true, subtree: true, attributes: true, attributeFilter: ['aria-label'] });
 main();

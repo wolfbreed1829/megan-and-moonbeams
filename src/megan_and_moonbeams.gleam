@@ -22,6 +22,13 @@ type Screen {
   Reflection
 }
 
+type Sound {
+  Quiet
+  Waves
+  LoadingSound
+  SoundUnavailable
+}
+
 type Model {
   Model(
     mode: Mode,
@@ -31,6 +38,7 @@ type Model {
     speaking: Bool,
     audio_error: Bool,
     motion: Bool,
+    sound: Sound,
   )
 }
 
@@ -44,6 +52,9 @@ type Message {
   NarrationEnded
   NarrationFailed
   ToggleMotion
+  ToggleSound
+  SoundReady(Bool)
+  SoundFailed
   KeyPressed(String)
 }
 
@@ -53,6 +64,13 @@ fn narrate(content: String, ended: fn() -> Nil, failed: fn() -> Nil) -> Nil
 @external(javascript, "./browser.mjs", "stopNarration")
 fn stop_narration() -> Nil
 
+@external(javascript, "./ocean_audio.mjs", "setOceanSound")
+fn set_ocean_sound(
+  enabled: Bool,
+  complete: fn(Bool) -> Nil,
+  failed: fn() -> Nil,
+) -> Nil
+
 pub fn main() {
   let app = lustre.application(init, update, view)
   let assert Ok(_) = lustre.start(app, "#app", Nil)
@@ -60,7 +78,7 @@ pub fn main() {
 }
 
 fn init(_) {
-  #(Model(Watch, Entry, 0, 0, False, False, True), effect.none())
+  #(Model(Read, Entry, 0, 0, False, False, True, Quiet), effect.none())
 }
 
 fn stop() {
@@ -118,6 +136,28 @@ fn update(model: Model, message: Message) {
       effect.none(),
     )
     ToggleMotion -> #(Model(..model, motion: !model.motion), effect.none())
+    ToggleSound ->
+      case model.sound {
+        LoadingSound -> #(model, effect.none())
+        _ -> #(
+          Model(..model, sound: LoadingSound),
+          effect.from(fn(dispatch) {
+            set_ocean_sound(
+              model.sound != Waves,
+              fn(active) { dispatch(SoundReady(active)) },
+              fn() { dispatch(SoundFailed) },
+            )
+          }),
+        )
+      }
+    SoundReady(active) -> #(
+      Model(..model, sound: case active {
+        True -> Waves
+        False -> Quiet
+      }),
+      effect.none(),
+    )
+    SoundFailed -> #(Model(..model, sound: SoundUnavailable), effect.none())
     KeyPressed("Escape") -> #(
       Model(..model, screen: Entry, speaking: False),
       stop(),
@@ -138,6 +178,8 @@ fn icon(name: String) -> Element(Message) {
     "up-right" -> "M6 18 18 6M6 6h12v12"
     "close" -> "m6 6 12 12M6 18 18 6"
     "pause" -> "M8 5v14M16 5v14"
+    "waves" ->
+      "M2 7c2-3 4-3 6 0s4 3 6 0 4-3 8 0M2 12c2-3 4-3 6 0s4 3 6 0 4-3 8 0M2 17c2-3 4-3 6 0s4 3 6 0 4-3 8 0"
     "spark" -> "m12 2 2.7 7.3L22 12l-7.3 2.7L12 22l-2.7-7.3L2 12l7.3-2.7L12 2Z"
     _ -> "M5 12h14"
   }
@@ -270,17 +312,29 @@ fn view(model: Model) {
               ),
             ]),
             h.p([a.class("hero-note")], [
-              text("Christian stories. A moment for your soul."),
+              text("Faith-filled stories, from Megan to you."),
             ]),
             mode_selector(model.mode),
             h.button([a.class("enter-button"), e.on_click(Open(Story))], [
-              text("Enter the story"),
+              text(case model.mode {
+                Read -> "Begin reading"
+                Listen -> "Listen to a story"
+                Watch -> "Enter the story"
+              }),
               icon("arrow"),
             ]),
           ]),
           h.div([a.class("ocean-caption"), a.attribute("aria-hidden", "true")], [
             h.span([], []),
             text("BENEATH THE SAME MOON."),
+          ]),
+          h.blockquote([a.class("moon-verse")], [
+            h.p([], [
+              text("“In thy light"),
+              h.br([]),
+              text("shall we see light.”"),
+            ]),
+            h.cite([], [text("PSALM 36:9 · KJV")]),
           ]),
         ]),
         h.footer([a.class("entry-footer")], [
@@ -313,6 +367,7 @@ fn view(model: Model) {
               [a.class("footer-divider"), a.attribute("aria-hidden", "true")],
               [],
             ),
+            sound_button(model.sound),
             h.button(
               [
                 a.class("motion-toggle"),
@@ -352,6 +407,44 @@ fn view(model: Model) {
             reflection(model),
           )
       },
+    ],
+  )
+}
+
+fn sound_button(sound: Sound) {
+  h.button(
+    [
+      a.class(case sound {
+        Waves -> "sound-toggle is-playing"
+        _ -> "sound-toggle"
+      }),
+      a.aria_label(case sound {
+        Waves -> "Turn ocean sound off"
+        SoundUnavailable -> "Retry ocean sound"
+        _ -> "Turn ocean sound on"
+      }),
+      a.attribute("aria-pressed", case sound {
+        Waves -> "true"
+        _ -> "false"
+      }),
+      a.disabled(sound == LoadingSound),
+      e.on_click(ToggleSound),
+    ],
+    [
+      h.span([a.class("sound-bars"), a.attribute("aria-hidden", "true")], [
+        h.i([], []),
+        h.i([], []),
+        h.i([], []),
+        h.i([], []),
+      ]),
+      h.span([a.attribute("aria-live", "polite")], [
+        text(case sound {
+          Waves -> "Sound on"
+          Quiet -> "Sound off"
+          LoadingSound -> "Starting…"
+          SoundUnavailable -> "Unavailable"
+        }),
+      ]),
     ],
   )
 }
@@ -530,6 +623,31 @@ fn story_view(model: Model) {
       h.p([], [text("“" <> story.verse <> "”")]),
       h.cite([], [text(story.scripture)]),
     ]),
+    case model.mode {
+      Watch -> element.none()
+      _ ->
+        h.div([a.class("chapter-navigation")], [
+          h.span([a.class("chapter-count")], [
+            text("CHAPTER 0" <> int.to_string(model.chapter + 1) <> " / 03"),
+          ]),
+          h.button(
+            [
+              a.class("enter-button next-chapter"),
+              e.on_click(case model.chapter < 2 {
+                True -> SelectChapter(model.chapter + 1)
+                False -> Open(Reflection)
+              }),
+            ],
+            [
+              text(case model.chapter < 2 {
+                True -> "Next chapter"
+                False -> "A moment to reflect"
+              }),
+              icon("arrow"),
+            ],
+          ),
+        ])
+    },
     h.button(
       [a.class("text-button reflect-link"), e.on_click(Open(Reflection))],
       [icon("spark"), text("Stay for a moment"), icon("arrow")],
@@ -543,6 +661,24 @@ fn reflection(model: Model) {
     h.div([a.class("reflection-orbit"), a.attribute("aria-hidden", "true")], [
       icon("moon"),
     ]),
+    h.div(
+      [
+        a.class("breath-guide"),
+        a.attribute("role", "img"),
+        a.aria_label("Take a slow breath. Stay as long as you like."),
+      ],
+      [
+        h.span([a.class("breath-in"), a.attribute("aria-hidden", "true")], [
+          text("Breathe in"),
+        ]),
+        h.span([a.class("breath-out"), a.attribute("aria-hidden", "true")], [
+          text("Breathe out"),
+        ]),
+        h.span([a.class("breath-rest"), a.attribute("aria-hidden", "true")], [
+          text("Take your time"),
+        ]),
+      ],
+    ),
     label("A MOMENT OF STILLNESS"),
     h.h2([], [text("Be still."), h.br([]), h.em([], [text("You are held.")])]),
     h.p([a.class("reflection-prompt")], [text(story.reflection)]),

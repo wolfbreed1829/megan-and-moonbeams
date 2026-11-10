@@ -77,7 +77,7 @@ h1 em { display: inline-block; padding: 0 .07em .18em 0; margin-bottom: -.18em; 
 .featured-story { text-align: left; padding: 6px 0; background: none; }
 .eyebrow { font-size: 8px; font-weight: 500; letter-spacing: 2px; color: var(--gold); margin: 0 0 8px; line-height: 1.7; }
 .featured-title { font-family: var(--serif); font-size: 21px; font-weight: 400; }
-.round-button { width: 36px; height: 36px; border: 1px solid #d9d6bc40; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: transparent; }
+.round-button { width: 44px; height: 44px; border: 1px solid #d9d6bc40; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: transparent; }
 .round-button .icon { width: 16px; height: 16px; }
 .round-button:hover { background: #e8d6ac18; border-color: #d9d6bc90; }
 .next-story { margin-left: 17px; }
@@ -201,6 +201,56 @@ h2 em { font-weight: 400; color: var(--gold); }
 @keyframes orbit { 0%, 100% { transform: scale(1); opacity: .7; } 50% { transform: scale(1.08); opacity: 1; } }
 .no-script { display: grid; place-content: center; padding: 40px; height: 100svh; background: linear-gradient(#07111bb3,#07111bd9), url('/images/moonlit-ocean.webp') center / cover; }
 .no-script h1 { font-size: 55px; }
+
+/* A welcoming entrance, with comfortable controls and an unhurried rhythm. */
+.hero-note { font-size: 14px; color: #e1e1d8; letter-spacing: .2px; }
+.kicker { font-size: 10px; letter-spacing: 2.2px; }
+.mode { min-height: 44px; font-size: 13px; gap: 9px; padding-top: 9px; }
+.mode .icon { width: 18px; height: 18px; }
+.enter-button { min-height: 56px; min-width: 236px; font-size: 13px; color: #172734; }
+.explore { min-height: 44px; font-size: 13px; }
+.eyebrow { font-size: 9px; }
+.featured-title { font-size: 23px; }
+.stillness-button { min-height: 44px; font-size: 12px; }
+.motion-toggle { width: 44px; height: 44px; }
+.sound-toggle { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 0; background: none; color: #c7d0d5; font-size: 11px; white-space: nowrap; }
+.sound-toggle:hover, .sound-toggle.is-playing { color: var(--gold); }
+.sound-toggle:disabled { opacity: .6; }
+.sound-bars { display: flex; align-items: center; justify-content: center; gap: 3px; height: 20px; width: 21px; }
+.sound-bars i { width: 2px; height: 5px; background: currentColor; border-radius: 2px; transform-origin: center; }
+.sound-bars i:nth-child(2), .sound-bars i:nth-child(3) { height: 9px; }
+.is-playing .sound-bars i { animation: sound-wave 1.6s ease-in-out infinite alternate; }
+.is-playing .sound-bars i:nth-child(2) { animation-delay: -.8s; }
+.is-playing .sound-bars i:nth-child(3) { animation-delay: -.3s; }
+.is-playing .sound-bars i:nth-child(4) { animation-delay: -1.1s; }
+@keyframes sound-wave { from { transform: scaleY(.6); } to { transform: scaleY(2); } }
+.moon-verse { position: absolute; top: 28%; right: 2%; width: 29%; margin: 0; text-align: center; text-shadow: 0 2px 20px #020810; animation: arrive 1.8s 1.3s both; }
+.moon-verse p { font-family: var(--serif); font-size: clamp(23px, 2vw, 31px); font-style: italic; font-weight: 400; line-height: 1.24; letter-spacing: -.35px; color: #e5dfd0; margin: 0 0 13px; }
+.moon-verse cite { color: #c6c3b3; font-size: 8px; font-style: normal; letter-spacing: 2px; }
+.experience[data-entered] .moon-verse, .motion-paused .moon-verse { animation: none; }
+.chapter-navigation { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 29px; padding-top: 24px; border-top: 1px solid #d5c7a326; }
+.chapter-count { color: #adb9bc; font-size: 9px; letter-spacing: 1.4px; white-space: nowrap; }
+.next-chapter { min-width: 210px; font-size: 12px; }
+.story-dialog:has(.chapter-navigation) .reflect-link { display: none; }
+.chapter { font-size: 11px; min-height: 65px; }
+.dialog-top { position: sticky; top: 0; z-index: 2; background: #07131df2; backdrop-filter: blur(16px); }
+.reading, .listen-preview { scroll-margin-top: 92px; }
+.scripture cite { font-size: 10px; }
+.reflection-dialog { background: linear-gradient(#07121de8,#07121df5), url('/images/moonlit-ocean.webp') 70% center / cover; }
+.reflection-dialog .dialog-top { background: #05101a40; }
+.reflection-orbit { margin-top: 15px; margin-bottom: 30px; animation: breathing 10s ease-in-out infinite; box-shadow: 0 0 0 18px #dbc38c06, 0 0 90px #dbc38c20; }
+.breath-guide { height: 23px; margin: 0 auto 21px; position: relative; font-size: 11px; letter-spacing: 2px; color: #ded3b3; }
+.breath-guide > span { position: absolute; inset: 0; }
+.breath-in { animation: breathe-in-label 10s ease-in-out infinite; }
+.breath-out { animation: breathe-out-label 10s ease-in-out infinite; opacity: 0; }
+.breath-rest { display: none; }
+.reflection-prompt { font-size: 14px; }
+.return-link { min-height: 44px; font-size: 12px; }
+@keyframes breathing { 0%,100% { transform: scale(.94); opacity: .75; } 40%,50% { transform: scale(1.16); opacity: 1; } }
+@keyframes breathe-in-label { 0%,36% { opacity: 1; transform: translateY(0); } 46%,96% { opacity: 0; transform: translateY(-4px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes breathe-out-label { 0%,42% { opacity: 0; transform: translateY(4px); } 52%,88% { opacity: 1; transform: translateY(0); } 98%,100% { opacity: 0; transform: translateY(-4px); } }
+.motion-paused .breath-in, .motion-paused .breath-out { display: none; }
+.motion-paused .breath-rest { display: block; }
 @media (min-width: 1600px) {
   .entry { padding-left: 6%; padding-right: 6%; }
   .hero-copy { padding-left: 3%; }
@@ -212,8 +262,10 @@ h2 em { font-weight: 400; color: var(--gold); }
   h1 { font-size: 88px; }
   .hero { min-height: 530px; }
   .ocean-caption { display: none; }
+  .moon-verse { display: none; }
+  .entry-footer { flex-wrap: wrap; padding-top: 17px; padding-bottom: 17px; }
   .footer-actions { gap: 15px; }
-  .stillness-button { font-size: 9px; }
+  .stillness-button { font-size: 11px; }
   .featured { gap: 15px; }
   .next-story { margin-left: 5px; }
 }
@@ -226,7 +278,7 @@ h2 em { font-weight: 400; color: var(--gold); }
   .wordmark em { font-size: 18px; }
   .brand-mark > .icon { width: 28px; height: 28px; }
   .brand-mark > span { font-size: 9px; }
-  .explore { font-size: 10px; gap: 6px; }
+  .explore { font-size: 11px; gap: 6px; }
   .explore .icon { width: 13px; height: 13px; }
   .ocean { background-position: 76% center; }
   .ocean-shade { background: linear-gradient(90deg, #020a1375, #07121c26 70%, transparent), linear-gradient(0deg, #020810ed 2%, #020b1322 35%, transparent 65%); }
@@ -237,9 +289,9 @@ h2 em { font-weight: 400; color: var(--gold); }
   .kicker { font-size: 7px; letter-spacing: 1.8px; gap: 10px; }
   .little-line { width: 20px; }
   h1 { font-size: clamp(60px, 15.3vw, 88px); letter-spacing: -2.5px; margin-top: 25px; margin-bottom: 20px; }
-  .hero-note { font-size: 10px; letter-spacing: .15px; margin-bottom: 34px; }
+  .hero-note { font-size: 12px; letter-spacing: .15px; margin-bottom: 29px; }
   .mode-selector { gap: 25px; }
-  .mode { font-size: 11px; min-height: 32px; }
+  .mode { font-size: 12px; min-height: 44px; }
   .hero .enter-button { margin-top: 20px; min-width: 217px; }
   .entry-footer { min-height: 115px; gap: 16px; flex-wrap: wrap; padding: 19px 0; }
   .featured { width: 100%; }
@@ -249,8 +301,11 @@ h2 em { font-weight: 400; color: var(--gold); }
   .next-story { margin-left: auto; }
   .footer-actions { width: 100%; justify-content: space-between; }
   .footer-divider { display: none; }
-  .stillness-button { font-size: 10px; padding: 5px 0; }
-  .motion-toggle { height: 30px; }
+  .stillness-button { font-size: 11px; padding: 5px 0; }
+  .motion-toggle { height: 44px; }
+  .sound-toggle { font-size: 10px; }
+  .chapter-navigation { gap: 12px; flex-wrap: wrap; }
+  .next-chapter { min-width: 185px; }
   .overlay { width: calc(100% - 24px); max-height: calc(100svh - 24px); }
   .dialog-top { padding: 18px 20px; }
   .mini-brand { font-size: 18px; gap: 7px; }
@@ -263,7 +318,7 @@ h2 em { font-weight: 400; color: var(--gold); }
   .reading { min-height: 280px; padding-top: 27px; }
   .reading p { font-size: 23px; line-height: 1.5; }
   .reading h3 { font-size: 29px; }
-  .chapter { font-size: 9px; }
+  .chapter { font-size: 10px; }
   .chapters { gap: 11px; }
   .reflection-dialog h2 { font-size: 52px; }
   .reflection-dialog .dialog-content { padding: 37px 25px; }
@@ -289,4 +344,6 @@ h2 em { font-weight: 400; color: var(--gold); }
   .ocean-camera, .hero-copy, .dust { transform: none; }
   .ocean-surface { opacity: 0 !important; }
   .dust .mote { opacity: .2; }
+  .breath-in, .breath-out { display: none; }
+  .breath-rest { display: block; }
 }
