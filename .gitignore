@@ -1,0 +1,7 @@
+/.tools/
+/build/
+/dist/
+/node_modules/
+/artifacts/
+/.playwright-mcp/
+*.log

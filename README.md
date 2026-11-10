@@ -1,0 +1,54 @@
+# Megan and Moonbeams
+
+A cinematic entry screen for Megan's Christian storytelling app.
+
+Live app: https://wolfbreed1829.github.io/megan-and-moonbeams/
+
+## Run
+
+Requires Node.js 22.12+ and Gleam 1.19+. This workspace includes a local Gleam executable in `.tools/gleam/`; elsewhere, install [Gleam](https://gleam.run/getting-started/installing/) or set `GLEAM_BIN`.
+
+```sh
+npm install
+npm run dev
+```
+
+Open http://127.0.0.1:5173. Gleam changes rebuild automatically; CSS updates through Vite. Windows directory junctions are prepared automatically, without administrator privileges.
+
+```sh
+npm run check
+npm run build
+npm run preview
+```
+
+The production build is in `dist/`.
+
+## GitHub Pages
+
+Pushes to `main` run `.github/workflows/deploy.yml`, which checks and builds the Gleam app and deploys `dist/` to GitHub Pages. The workflow gets the site's base path from GitHub, so assets resolve correctly beneath the repository URL. Local development continues to use `/`.
+
+For a local build with the same path on PowerShell:
+
+```powershell
+$env:SITE_BASE_PATH = '/megan-and-moonbeams/'
+npm run build
+npm run preview -- --base=/megan-and-moonbeams/
+```
+
+## Source
+
+- `src/megan_and_moonbeams.gleam`: typed model, messages, updates, views, and managed narration effects.
+- `src/stories.gleam`: sample story records, chapters, Scripture, and reflection prompts.
+- `src/styles.css`: cinematic layout, responsive styles, reduced-motion support.
+- `src/browser.mjs`: optional browser speech synthesis. It is clearly labeled sample narration, not Megan's voice.
+- `src/main.js`: starts Lustre and bridges native modal focus management.
+
+Watch shows a short coming-soon state until Megan's videos are available. Read offers three sample reflections; Listen narrates the selected chapter with the browser's voice where supported. The story collection, chapter selection, reflection, Escape-to-close, focus restoration, and atmosphere pause all work. No video or recordings are fabricated.
+
+Replace the sample records with Megan's content, then connect actual video, audio, caption, and transcript assets in the story view as the app grows.
+
+## Artwork
+
+The room was created with the built-in image-generation tool. The optimized runtime asset is `public/images/story-room.webp`; the original and exact generation prompt are in `docs/artwork/`. Fonts are Cormorant Garamond and DM Sans, served by Google Fonts with local fallbacks.
+
+Framework reference: [Lustre](https://hexdocs.pm/lustre/).
